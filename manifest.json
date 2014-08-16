@@ -1,0 +1,26 @@
+{
+  "name": "Music Klub",
+  "version": "0.1",
+  "description": "Helps your share your music on the Music Klub ;)",
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "page_action" :
+  {
+    "default_icon" : "bbmusik.png",
+    "default_title" : "Share on Music Klub",
+    "default_popup": "popup.html"
+  },
+  "permissions" : [
+    "declarativeContent",
+    "tabs",
+    "http://*/*",
+    "background"
+  ],
+  "icons" : {
+    "48" : "bbmusik.png",
+    "128" : "bbmusik.png"
+  },
+  "manifest_version": 2
+}

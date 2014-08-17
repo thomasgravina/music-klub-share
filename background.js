@@ -13,6 +13,12 @@ chrome.runtime.onInstalled.addListener(function()
           pageUrl: { urlContains: 'soundcloud' },
         }),
         new chrome.declarativeContent.PageStateMatcher({
+          pageUrl: { urlContains: 'grooveshark' },
+        }),
+        new chrome.declarativeContent.PageStateMatcher({
+          pageUrl: { urlContains: 'jango' },
+        }),
+        new chrome.declarativeContent.PageStateMatcher({
           pageUrl: { urlContains: 'spotify' },
         })
       ],

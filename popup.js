@@ -1,12 +1,9 @@
-// http://open.spotify.com/track/1F8cDjKw5dNvkSJkyezfaO
-// spotify:track:1F8cDjKw5dNvkSJkyezfaO
-// https://www.youtube.com/watch?v=R7oL5ENKIKU
-// https://soundcloud.com/miniaturesrec/bellanova-stairway-to-heaven
 
 // Spotify
 var SPOTIFY_INFO_URL        = 'https://api.spotify.com/v1/tracks/';
 var SPOTIFY_SEARCH_URL      = 'https://api.spotify.com/v1/search?type=track&limit=1&q=';
-var SPOTIFY_HTTP_PREFIX     = 'http://open.spotify.com/track/';
+var SPOTIFY_HTTP_PREFIX     = 'https://play.spotify.com/';
+// var SPOTIFY_HTTP_PREFIX     = 'http://open.spotify.com/track/';
 var SPOTIFY_URI_PREFIX      = 'spotify:track:';
 
 // Soundcloud
@@ -16,11 +13,17 @@ var SOUNDCLOUD_HTTP_PREFIX  = 'http://soundcloud.com/';
 var SOUNDCLOUD_HTTPS_PREFIX = 'https://soundcloud.com/';
 
 // Youtube
-var YOUTUBE_API_KEY      = 'AIzaSyCyjUwmNqcZm9DP6sUNsUutTfhvRndD3no';
+var YOUTUBE_API_KEY         = 'AIzaSyCyjUwmNqcZm9DP6sUNsUutTfhvRndD3no';
 var YOUTUBE_INFO_URL        = 'https://www.googleapis.com/youtube/v3/videos?part=snippet&key=' + YOUTUBE_API_KEY + '&id=';
 var YOUTUBE_SEARCH_URL      = 'https://www.googleapis.com/youtube/v3/search?part=snippet&order=viewCount&type=video&key=' + YOUTUBE_API_KEY + '&max-results=10&q=';
 var YOUTUBE_HTTP_PREFIX     = 'https://www.youtube.com/watch?v=';
 var YOUTUBE_HTTPS_PREFIX    = 'https://www.youtube.com/watch?v=';
+
+// Grooveshark
+var GROOVESHARK_HTTP_PREFIX = 'http://grooveshark.com/';
+
+// Jango
+var JANGO_HTTP_PREFIX       = 'http://www.jango.com/';
 
 function getUrlVars(url)
 {
@@ -64,6 +67,16 @@ function isYoutubeLink(link)
   return link.indexOf(YOUTUBE_HTTPS_PREFIX) == 0 || link.indexOf(YOUTUBE_HTTP_PREFIX) == 0;
 }
 
+function isGroovesharkLink(link)
+{
+  return link.indexOf(GROOVESHARK_HTTP_PREFIX) == 0;
+}
+
+function isJangoLink(link)
+{
+  return link.indexOf(JANGO_HTTP_PREFIX) == 0;
+}
+
 function getIdFromLink(link)
 {
   if (isYoutubeLink(link))
@@ -83,6 +96,7 @@ function searchYoutube(title)
 {
   $.get(YOUTUBE_SEARCH_URL + title, function(data)
   {
+    console.log(data);
     var videoId = data['items'][0]['id']['videoId'];
     appendResult(YOUTUBE_HTTPS_PREFIX + videoId);
   });
@@ -92,8 +106,11 @@ function searchSoundcloud(title)
 {
   $.get(SOUNDCLOUD_INFO_URL + title, function(data)
   {
-    var link = data[0]['permalink_url'];
-    appendResult(link);
+    if (data.length > 0)
+    {
+      var link = data[0]['permalink_url'];
+      appendResult(link);
+    }
   });
 }
 
@@ -107,19 +124,6 @@ function searchSpotify(title)
     var id = items[0]['id'];
     appendResult(SPOTIFY_HTTP_PREFIX + id);
     appendResult(SPOTIFY_URI_PREFIX + id);
-  });
-}
-
-function getSpotifyTrackInfo(trackId)
-{
-  $.get(SPOTIFY_INFO_URL + trackId, function(data)
-  {
-    var title = data['name'];
-    prependTitle(title);
-    appendResult(SPOTIFY_HTTP_PREFIX + trackId + '*');
-    appendResult(SPOTIFY_URI_PREFIX + trackId + '*');
-    searchYoutube(title);
-    searchSoundcloud(title);
   });
 }
 
@@ -138,12 +142,41 @@ function getSoundcloudTrackInfo(trackId)
 {
   $.get(SOUNDCLOUD_INFO_URL + trackId, function(data)
   {
+    console.log(data);
     var title = data[0]['title'];
     var link = data[0]['permalink_url'];
     prependTitle(title);
     appendResult(link + '*');
     searchYoutube(title);
     searchSpotify(title);
+  });
+}
+
+function searchFromTrackInfo(trackInfo)
+{
+  var title = trackInfo.title;
+  var artist = trackInfo.artist;
+  var url = trackInfo.url;
+  prependTitle(artist + ' - ' + title);
+  appendResult(url + ' *');
+  searchSpotify(title);
+  searchYoutube(title + ' ' + artist);
+  searchSoundcloud(title + ' ' + artist);
+}
+
+function getTrackInfo(method)
+{
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs)
+  {
+    chrome.tabs.sendMessage(tabs[0].id, {request: method}, function(response)
+    {
+      if (response != undefined)
+      {
+        console.log('Received response:');
+        console.log(response.trackInfo);
+        searchFromTrackInfo(response.trackInfo);
+      }
+    });
   });
 }
 
@@ -154,18 +187,26 @@ function search(url)
 
   var trackId = getIdFromLink(url);
 
-  if (isSpotifyLink(url) || isSpotifyUri(url))
+  if (isSpotifyLink(url))
   {
-    getSpotifyTrackInfo(trackId);
+    getTrackInfo('getSpotifyInfo');
   }
   else if (isYoutubeLink(url))
   {
-    appendResult(url + '*');
+    appendResult(url + ' *');
     getYoutubeTrackInfo(trackId);
   }
   else if (isSoundcloudLink(url))
   {
     getSoundcloudTrackInfo(trackId);
+  }
+  else if (isGroovesharkLink(url))
+  {
+    getTrackInfo('getGroovesharkInfo');
+  }
+  else if (isJangoLink(url))
+  {
+    getTrackInfo('getJangoInfo');
   }
 }
 

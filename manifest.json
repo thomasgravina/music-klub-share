@@ -6,6 +6,19 @@
     "scripts": ["background.js"],
     "persistent": false
   },
+  "content_scripts" : [
+    {
+      "matches" : [
+        "http://www.jango.com/*",
+        "http://grooveshark.com/*",
+        "https://play.spotify.com/*"
+      ],
+      "js" : [
+        "jquery.min.js",
+        "script.js"
+      ]
+    }
+  ],
   "page_action" :
   {
     "default_icon" : "bbmusik.png",
@@ -13,10 +26,12 @@
     "default_popup": "popup.html"
   },
   "permissions" : [
-    "declarativeContent",
     "tabs",
-    "http://*/*",
-    "background"
+    "background",
+    "declarativeContent",
+    "http://www.jango.com/*",
+    "http://grooveshark.com/*",
+    "https://play.spotify.com/*"
   ],
   "icons" : {
     "48" : "bbmusik.png",

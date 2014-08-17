@@ -3,7 +3,7 @@ Music Klub Share
 
 ## How to install?
 - `git clone git@github.com:thomasgravina/music-klub-share.git`
-- In Chrome, right-click on an extension icon, then "Manage"
+- In Chrome, open "Preferences", then choose "Extensions" on the left panel,
 - Check "Developer mode"
 - Click "Load unpacked extension..."
 - Select the folder previously cloned

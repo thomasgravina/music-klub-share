@@ -17,6 +17,8 @@ Music Klub Share
 - [X] Spotify (no URL directly available)  
 - [X] Grooveshark (no URL directly available)
 - [X] Jango (no URL at all)
+- [ ] Others?
 
 ## Known problems
-- Work only once per page loaded.
+- Work only once per page loaded. Just need to find a way to force the work each time the popup is open.
+- How about URL you have in the clipboard?

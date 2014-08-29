@@ -3,7 +3,7 @@
 var SPOTIFY_INFO_URL        = 'https://api.spotify.com/v1/tracks/';
 var SPOTIFY_SEARCH_URL      = 'https://api.spotify.com/v1/search?type=track&limit=1&q=';
 var SPOTIFY_HTTP_PREFIX     = 'https://play.spotify.com/';
-// var SPOTIFY_HTTP_PREFIX     = 'http://open.spotify.com/track/';
+var SPOTIFY_HTTP_OPEN_PREFIX     = 'http://open.spotify.com/track/';
 var SPOTIFY_URI_PREFIX      = 'spotify:track:';
 
 // Soundcloud
@@ -122,7 +122,7 @@ function searchSpotify(title)
     if (items.length == 0)
       return;
     var id = items[0]['id'];
-    appendResult(SPOTIFY_HTTP_PREFIX + id);
+    appendResult(SPOTIFY_HTTP_PLAY_PREFIX + id);
     appendResult(SPOTIFY_URI_PREFIX + id);
   });
 }

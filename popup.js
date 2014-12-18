@@ -1,9 +1,8 @@
-
 // Spotify
 var SPOTIFY_INFO_URL        = 'https://api.spotify.com/v1/tracks/';
 var SPOTIFY_SEARCH_URL      = 'https://api.spotify.com/v1/search?type=track&limit=1&q=';
 var SPOTIFY_HTTP_PREFIX     = 'https://play.spotify.com/';
-var SPOTIFY_HTTP_OPEN_PREFIX     = 'http://open.spotify.com/track/';
+var SPOTIFY_HTTP_OPEN_PREFIX= 'http://open.spotify.com/track/';
 var SPOTIFY_URI_PREFIX      = 'spotify:track:';
 
 // Soundcloud
@@ -16,11 +15,13 @@ var SOUNDCLOUD_HTTPS_PREFIX = 'https://soundcloud.com/';
 var YOUTUBE_API_KEY         = 'AIzaSyCyjUwmNqcZm9DP6sUNsUutTfhvRndD3no';
 var YOUTUBE_INFO_URL        = 'https://www.googleapis.com/youtube/v3/videos?part=snippet&key=' + YOUTUBE_API_KEY + '&id=';
 var YOUTUBE_SEARCH_URL      = 'https://www.googleapis.com/youtube/v3/search?part=snippet&order=viewCount&type=video&key=' + YOUTUBE_API_KEY + '&max-results=10&q=';
-var YOUTUBE_HTTP_PREFIX     = 'https://www.youtube.com/watch?v=';
+var YOUTUBE_HTTP_PREFIX     = 'http://www.youtube.com/watch?v=';
 var YOUTUBE_HTTPS_PREFIX    = 'https://www.youtube.com/watch?v=';
 
 // Grooveshark
 var GROOVESHARK_HTTP_PREFIX = 'http://grooveshark.com/';
+var GROOVESHARK_KEY         = 'multiservice5';
+var GROOVESHARK_SECRET      = 'c26fa2b1fb1e37f0b504a522c07ca08e';
 
 // Jango
 var JANGO_HTTP_PREFIX       = 'http://www.jango.com/';

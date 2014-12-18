@@ -1,4 +1,3 @@
-
 function extractGroovesharkInfo()
 {
   var artist = $('#now-playing-metadata > div > a').html();
